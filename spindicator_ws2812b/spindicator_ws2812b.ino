@@ -13,11 +13,11 @@ void setup() {
 
 
 void loop() {
-    uint32_t colour = pixels.Color(255, 100, 0);
+    uint32_t colour = pixels.Color(255, 0, 0);
     int initial_bright = 0;
     int last_bright = 255;
     int step = 1;
-    int delay_ = 50;
+    int delay_ = 1;
     
     for (int i=initial_bright; i<=last_bright; i=i+step){
         pixels.fill(colour);
