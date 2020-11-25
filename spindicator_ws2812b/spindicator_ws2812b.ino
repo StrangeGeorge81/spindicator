@@ -12,67 +12,82 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 *
 */
 int nas = 11;
-int brght = pinax;
+int brght = 50;
 int funk = brght/4;
-int rd = pinax;
-int gr = pinax;
-int bl = pinax;
+int rd = 0;
+int gr = 0;
+int bl = 0;
+int delay_ = 100;
+
+uint32_t rgbcolor = pixels.ColorHSV(0, 255, brght);
+
 void circlex3left (){
 
     for (nas=11; nas>=0; nas--){
 
         if (nas==11){
 
-            pixels.setBrightness(brght);
-            pixels.setPixelColor (nas, rd, gr, bl);
+            rgbcolor = pixels.ColorHSV(0, 255, brght);
+            pixels.setPixelColor (nas, rgbcolor);
+
+            rgbcolor = pixels.ColorHSV(0, 255, brght/2);
+            pixels.setPixelColor (0, rgbcolor);
+
+            rgbcolor = pixels.ColorHSV(0, 255, brght/brght);
+            pixels.setPixelColor (1, rgbcolor);
+
             pixels.show();
-            pixels.setBrightness(funk);
-            pixels.setPixelColor (0, rd, gr, bl);
-            pixels.show();
-            pixels.setBrightness();
-            pixels.setPixelColor (1, rd, gr, bl);
-            pixels.show();
-            pixels.clear();
-            delay (281);
 
         }
 
         if (nas==10){
             
-            pixels.setBrightness(brght);
-            pixels.setPixelColor (nas, rd, gr, bl);
+            rgbcolor = pixels.ColorHSV(0, 255, brght);
+            pixels.setPixelColor (nas, rgbcolor);
+            
+            rgbcolor = pixels.ColorHSV(0, 255, brght/2);
+            pixels.setPixelColor (11, rgbcolor);
+            
+            rgbcolor = pixels.ColorHSV(0, 255, brght/brght);
+            pixels.setPixelColor (0, rgbcolor);
+
             pixels.show();
-            pixels.setBrightness(funk);
-            pixels.setPixelColor (11, rd, gr, bl);
-            pixels.show();
-            pixels.setBrightness(1);
-            pixels.setPixelColor (0, rd, gr, bl);
-            pixels.show();
-            pixels.clear();
-            delay (281);
 
         }
 
         if (nas!=11 and nas!=10){
 
-            pixels.setBrightness(brght);
-            pixels.setPixelColor (nas, rd, gr, bl);
+            rgbcolor = pixels.ColorHSV(0, 255, brght);
+            pixels.setPixelColor (nas, rgbcolor);
+            
+            rgbcolor = pixels.ColorHSV(0, 255, brght/2);
+            pixels.setPixelColor (nas+1, rgbcolor);
+            
+            rgbcolor = pixels.ColorHSV(0, 255, brght/brght);
+            pixels.setPixelColor (nas+2, rgbcolor);
+
             pixels.show();
-            pixels.setBrightness(funk);
-            pixels.setPixelColor (nas+1, rd, gr, bl);
-            pixels.show();
-            pixels.setBrightness(1);
-            pixels.setPixelColor (nas+2, rd, gr, bl);
-            pixels.show();
-            pixels.clear();
-            delay (281);
 
         }
+
+
+        delay (delay_);
+        pixels.clear();
 
     }
     
 }
 
+// byte bright = 0;
+// uint32_t rgbcolor = pixels.ColorHSV(0, 255, bright);
+
+// while(1){
+//     pixels.fill(rgbcolor);
+//     pixels.show();
+//     bright += 1;
+//     rgbcolor = pixels.ColorHSV(0, 255, bright);
+//     delay(200);
+// }
 
 void setup() {
     
@@ -82,6 +97,6 @@ void setup() {
 
 
 void loop() {
-
+    circlex3left();
 
 }
