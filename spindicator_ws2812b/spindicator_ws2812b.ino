@@ -17,9 +17,10 @@ int funk = brght/4;
 int rd = 0;
 int gr = 0;
 int bl = 0;
-int delay_ = 100;
+int delay_ = 206;
+bool btn = 0;
 
-uint32_t rgbcolor = pixels.ColorHSV(0, 255, brght);
+uint32_t rgbcolor = pixels.ColorHSV(201, 206, brght);
 
 void circlex3left (){
 
@@ -27,13 +28,13 @@ void circlex3left (){
 
         if (nas==11){
 
-            rgbcolor = pixels.ColorHSV(0, 255, brght);
+            rgbcolor = pixels.ColorHSV(201, 206, brght);
             pixels.setPixelColor (nas, rgbcolor);
 
-            rgbcolor = pixels.ColorHSV(0, 255, brght/2);
+            rgbcolor = pixels.ColorHSV(201, 206, brght/2);
             pixels.setPixelColor (0, rgbcolor);
 
-            rgbcolor = pixels.ColorHSV(0, 255, brght/brght);
+            rgbcolor = pixels.ColorHSV(201, 206, brght/brght);
             pixels.setPixelColor (1, rgbcolor);
 
             pixels.show();
@@ -42,13 +43,13 @@ void circlex3left (){
 
         if (nas==10){
             
-            rgbcolor = pixels.ColorHSV(0, 255, brght);
+            rgbcolor = pixels.ColorHSV(201, 206, brght);
             pixels.setPixelColor (nas, rgbcolor);
             
-            rgbcolor = pixels.ColorHSV(0, 255, brght/2);
+            rgbcolor = pixels.ColorHSV(201, 206, brght/2);
             pixels.setPixelColor (11, rgbcolor);
             
-            rgbcolor = pixels.ColorHSV(0, 255, brght/brght);
+            rgbcolor = pixels.ColorHSV(201, 206, brght/brght);
             pixels.setPixelColor (0, rgbcolor);
 
             pixels.show();
@@ -57,13 +58,13 @@ void circlex3left (){
 
         if (nas!=11 and nas!=10){
 
-            rgbcolor = pixels.ColorHSV(0, 255, brght);
+            rgbcolor = pixels.ColorHSV(201, 206, brght);
             pixels.setPixelColor (nas, rgbcolor);
             
-            rgbcolor = pixels.ColorHSV(0, 255, brght/2);
+            rgbcolor = pixels.ColorHSV(201, 206, brght/2);
             pixels.setPixelColor (nas+1, rgbcolor);
             
-            rgbcolor = pixels.ColorHSV(0, 255, brght/brght);
+            rgbcolor = pixels.ColorHSV(201, 206, brght/brght);
             pixels.setPixelColor (nas+2, rgbcolor);
 
             pixels.show();
@@ -79,24 +80,31 @@ void circlex3left (){
 }
 
 // byte bright = 0;
-// uint32_t rgbcolor = pixels.ColorHSV(0, 255, bright);
+// uint32_t rgbcolor = pixels.ColorHSV(0, 206, bright);
 
 // while(1){
 //     pixels.fill(rgbcolor);
 //     pixels.show();
 //     bright += 1;
-//     rgbcolor = pixels.ColorHSV(0, 255, bright);
+//     rgbcolor = pixels.ColorHSV(0, 206, bright);
 //     delay(200);
 // }
 
 void setup() {
     
     pixels.begin();
+    pinMode (9, INPUT);
 
 }
 
 
 void loop() {
-    circlex3left();
 
+    btn = digitalRead (9);
+    
+    if (btn) {
+
+        circlex3left();
+
+    }
 }
