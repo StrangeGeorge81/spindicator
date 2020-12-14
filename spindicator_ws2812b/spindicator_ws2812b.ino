@@ -24,7 +24,7 @@ uint32_t rgbcolor = pixels.ColorHSV(201, 206, brght);
 
 void circlex3left (){
 
-    for (nas=11; nas>=0; nas--){
+    // for (nas=11; nas>=0; nas--){
 
         if (nas==11){
 
@@ -75,7 +75,7 @@ void circlex3left (){
         delay (delay_);
         pixels.clear();
 
-    }
+    //}
     
 }
 
@@ -106,5 +106,11 @@ void loop() {
 
         circlex3left();
 
+        nas--;
+
+        if (nas<0){
+            
+            nas = 11;
+        }
     }
 }
