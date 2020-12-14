@@ -6,16 +6,19 @@
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 int nas = 11;
+//NUMPIXELS 12 <=> 0 to 11
 
-int brght = 0; //initial goes up to 48 (not higher, too bright!!)
+int brght = 0;
+//initial goes up to 48 (not higher, too bright!!)
 
 int funk = 0;
-// funk apo 0 to 65535
+// funk from 0 to 65535
 
 int delay_ = 42; //static
 
 bool btn = 0;
 bool btn2 = 0;
+// buttons, btn for circle / btn2 for HUE
 
 uint32_t rgbcolor = pixels.ColorHSV(funk, 255, brght);
 
@@ -64,7 +67,8 @@ void funkyColors (){
     if (btn2){
         
         funk=funk+255;
-        // 65535/255=257 diaforetika xrwmata!!!! 
+        // 65535/255=257 different colors!!!!
+        //if you want more do the math (HUE div)
     }
 
     if (funk==65535){
@@ -113,4 +117,5 @@ void loop() {
     }
 
     circlex3left();
+
 }
