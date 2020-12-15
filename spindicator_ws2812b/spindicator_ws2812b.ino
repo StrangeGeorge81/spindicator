@@ -28,9 +28,9 @@ float dmr = 0;
 int strn = 0;
 /* 
 *  dmr = dimmer, 255 = saturation
-*  255 goes from 0 to 255
-*  dimr goes from 0 to 1023
-*  with dmr/ satur <=> 4.0117647058823529 (fuck me, right?)
+*  strn goes from 0 to 255
+*  dmr goes from 0 to 1023
+*  with dmr/255 <=> strn = dmr/4.0117647058823529 (fuck me, right?)
 */
 
 uint32_t rgbcolor = pixels.ColorHSV(funk, strn, brght);
@@ -157,6 +157,8 @@ void setup() {
     pinMode (A5, INPUT);
     pinMode (11, INPUT);
 
+    // BOOT Secuence!!!
+
     int i=0;
     while (i<=12){
 
@@ -180,6 +182,7 @@ void setup() {
     }
     pixels.clear();
     
+    // Should work....
     
 
 }
