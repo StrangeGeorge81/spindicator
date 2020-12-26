@@ -106,7 +106,7 @@ void setup() {
     pinMode (11, INPUT);
 
     // BOOT Secuence!!!
-
+/*
     for (int i=0; i<=11; i++){            
         uint32_t colour = pixels.Color((i+1)*20, (i+1)*20, (i+1)*20);
 
@@ -130,7 +130,7 @@ void setup() {
 
     }
     pixels.clear();
-    
+    */
     // Might work,might not....
     
 }
