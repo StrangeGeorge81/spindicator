@@ -107,8 +107,8 @@ void setup() {
     pixels.begin();
     pinMode (START_SPINNING_BTN_PIN, INPUT);
     pinMode (CIRCLE_HUE_BTN_PIN, INPUT);
-    pinMode (A5, INPUT);
-    pinMode (11, INPUT);
+    pinMode (POTENTIOMETER_PIN, INPUT);
+    pinMode (SWITCH_SPIN_DIRECTION_SWITCH_PIN, INPUT);
 
     // BOOT Secuence!!!
 /*
@@ -143,9 +143,9 @@ void setup() {
 void loop() {
 
     btn = digitalRead (START_SPINNING_BTN_PIN);
-    btn2 = digitalRead(10);
-    btn3 = digitalRead(11);
-    dmr = analogRead (A5);
+    btn2 = digitalRead(CIRCLE_HUE_BTN_PIN);
+    btn3 = digitalRead(SWITCH_SPIN_DIRECTION_SWITCH_PIN);
+    dmr = analogRead (POTENTIOMETER_PIN);
     strn = dmr / 4.0117647058823529;
     funkyColors();
     switchbtn();
