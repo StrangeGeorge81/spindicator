@@ -1,78 +1,83 @@
 #include <Adafruit_NeoPixel.h>
 
-#define NUMPIXELS 12
-#define PIN 8
+#define NUMPIXELS 12//NUMPIXELS 12 <=> 0 to 11
+#define PIXELS_PIN 8
 
-Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+#define START_SPINNING_BTN_PIN 9
+#define CIRCLE_HUE_BTN_PIN 10
+#define SWITCH_SPIN_DIRECTION_SWITCH_PIN 11
+#define POTENTIOMETER_PIN A5
 
-int nas = 0;
-//NUMPIXELS 12 <=> 0 to 11
+Adafruit_NeoPixel pixels(NUMPIXELS, PIXELS_PIN, NEO_GRB + NEO_KHZ800);
+
+int first_pixel = 0;
 int brght = 0;
-//initial goes up to 42 (not higher, too bright!!)
-int funk = 0;
-// funk from 0 to 65535
-int delay_ = 42; //static
-bool btn = 0;
-bool btn2 = 0;
-// buttons, btn for circle / btn2 for HUE
-int swh = 0 ;
-bool btn3 = 0 ;
-// swh = switch for circle left or right
-// btn3 contols swh
+byte max_brght = 42;//initial goes up to 42 (not higher, too bright!!)
+
+int hue = 0;// HUE from 0 to 65535
+const byte move_delay = 42;
+
+bool btn = 0;// input to start
+bool btn2 = 0;// input to cycle the HUE
+
+int swh = 0 ; // switch for circle left or right 
+bool btn3 = 0 ;// temp value to convert switch 2 button. TODO: fix this
+
 float dmr = 0;
 int strn = 0;
-/* 
-*  dmr = dimmer, 255 = saturation
-*  strn goes from 0 to 255
-*  dmr goes from 0 to 1023
-*  with dmr/255 <=> strn = dmr/4.0117647058823529 (fuck me, right?)
+/**
+ *  dmr  : dimmer, controls the dimming. Conected to analog pin (goes from 0 to 1023)
+ *  strn : saturation, goes from 0 to 255
+ * 
+ * The following equation connects the two variables
+ * with dmr/255 <=> strn = dmr/4.0117647058823529 (fuck me, right?)
 */
 
-uint32_t rgbcolor = pixels.ColorHSV(funk, strn, brght);
+uint32_t rgbcolor = pixels.ColorHSV(hue, strn, brght);
 
-void HSV_around(int a, int b){    
-    rgbcolor = pixels.ColorHSV(funk, strn, brght);
-    pixels.setPixelColor (nas, rgbcolor);
-    rgbcolor = pixels.ColorHSV(funk, strn, brght/2);
-    pixels.setPixelColor (a, rgbcolor);
-    rgbcolor = pixels.ColorHSV(funk, strn, brght/16);
-    pixels.setPixelColor (b, rgbcolor);
+void HSV_around(int second_pixel, int third_pixel){    
+    rgbcolor = pixels.ColorHSV(hue, strn, brght);
+    pixels.setPixelColor (first_pixel, rgbcolor);
+    rgbcolor = pixels.ColorHSV(hue, strn, brght/2);
+    pixels.setPixelColor (second_pixel, rgbcolor);
+    rgbcolor = pixels.ColorHSV(hue, strn, brght/16);
+    pixels.setPixelColor (third_pixel, rgbcolor);
     pixels.show();
 }
 
 void circlex3left (){
-    if (nas == -1 or nas==12){                
-        nas = 11;
+    if (first_pixel == -1 or first_pixel==12){                
+        first_pixel = 11;
     }
-    if (nas==11){
+    if (first_pixel==11){
         HSV_around(0, 1);
     }
-    if (nas==10){
+    if (first_pixel==10){
         HSV_around(11, 0);
     }
-    if (nas!=11 && nas!=10){
-       HSV_around(nas+1, nas+2);
+    if (first_pixel!=11 && first_pixel!=10){
+       HSV_around(first_pixel+1, first_pixel+2);
     }
-    nas--;
-    delay (delay_);
+    first_pixel--;
+    delay (move_delay);
     pixels.clear();    
 }
 
 void circlex3right (){
-    if (nas==12 or nas== -1){                
-        nas = 0;
+    if (first_pixel==12 or first_pixel== -1){                
+        first_pixel = 0;
     }
-    if (nas==0){
+    if (first_pixel==0){
         HSV_around(11, 10);
     }
-    if (nas==1){   
+    if (first_pixel==1){   
         HSV_around(0, 11);
     }
-    if (nas!=0 && nas!=1){     
-       HSV_around(nas-1, nas-2);
+    if (first_pixel!=0 && first_pixel!=1){     
+       HSV_around(first_pixel-1, first_pixel-2);
     }
-    nas++;
-    delay (delay_);
+    first_pixel++;
+    delay (move_delay);
     pixels.clear();
 }
 
@@ -87,12 +92,12 @@ void switchbtn() {
 
 void funkyColors (){
     if (btn2){  
-        funk=funk+255;
+        hue=hue+255;
         // 65535/255=257 different colors!!!!
         //if you want more, do the math (HUE div)
     }
-    if (funk==65535){   
-        funk=0;
+    if (hue==65535){   
+        hue=0;
     }
 }
 
@@ -100,8 +105,8 @@ void funkyColors (){
 void setup() {
     
     pixels.begin();
-    pinMode (9, INPUT);
-    pinMode (10, INPUT);
+    pinMode (START_SPINNING_BTN_PIN, INPUT);
+    pinMode (CIRCLE_HUE_BTN_PIN, INPUT);
     pinMode (A5, INPUT);
     pinMode (11, INPUT);
 
@@ -137,7 +142,7 @@ void setup() {
 
 void loop() {
 
-    btn = digitalRead (9);
+    btn = digitalRead (START_SPINNING_BTN_PIN);
     btn2 = digitalRead(10);
     btn3 = digitalRead(11);
     dmr = analogRead (A5);
