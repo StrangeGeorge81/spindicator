@@ -149,7 +149,7 @@ void loop() {
     
     
     if (swh){
-        while (btn) {
+        if (btn) {
             brght=48;
             circlex3left();
         }
@@ -160,7 +160,7 @@ void loop() {
         switchbtn();
     }
     else{
-        while (btn){
+        if (btn){
             brght=48;
             circlex3right();
         }
