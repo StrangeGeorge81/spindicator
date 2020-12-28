@@ -15,7 +15,7 @@ int delay_ = 42; //static
 bool btn = 0;
 bool btn2 = 0;
 // buttons, btn for circle / btn2 for HUE
-int swh = 0 ;
+bool swh = 0 ;
 bool btn3 = 0 ;
 // swh = switch for circle left or right
 // btn3 contols swh
@@ -54,8 +54,7 @@ void circlex3left (){
        HSV_around(nas+1, nas+2);
     }
     nas--;
-    delay (delay_);
-    pixels.clear();    
+    delay (delay_);    
 }
 
 void circlex3right (){
@@ -73,10 +72,11 @@ void circlex3right (){
     }
     nas++;
     delay (delay_);
-    pixels.clear();
 }
 
 void switchbtn() {
+    btn3 = digitalRead(11);
+
     if (btn3 && swh==0){    
         swh = 1;
     }
@@ -145,29 +145,28 @@ void loop() {
     funkyColors();
     switchbtn();
     
-    if (swh==0){
-        if (btn) {
+    
+    if (swh){
+        while (btn) {
             brght=48;
             circlex3left();
         }
-        else{
-            brght=brght-3;            
-            if (brght<0){
-                brght=0;
-            }
+        brght=brght-3;            
+        if (brght<0){
+            brght=0;
         }
+        switchbtn();
     }
-    if (swh==1){
-        if (btn){
+    else{
+        while (btn){
             brght=48;
             circlex3right();
         }
-        else{
-            brght=brght-3;            
-            if (brght<0){
-                brght=0;
-            }
+        brght=brght-3;            
+        if (brght<0){
+            brght=0;
         }
+        switchbtn();
     }
 
 }
