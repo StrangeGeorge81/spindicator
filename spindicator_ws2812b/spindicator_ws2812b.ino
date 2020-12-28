@@ -17,11 +17,11 @@ byte max_brght = 42;//initial goes up to 42 (not higher, too bright!!)
 int hue = 0;// HUE from 0 to 65535
 const byte move_delay = 42;
 
-bool btn = 0;// input to start
-bool btn2 = 0;// input to cycle the HUE
+bool start_spin = 0;// input to start
+bool circle_hue = 0;// input to cycle the HUE
 
 int swh = 0 ; // switch for circle left or right 
-bool btn3 = 0 ;// temp value to convert switch 2 button. TODO: fix this
+bool swh_btn = 0 ;// temp value to convert switch 2 button. TODO: fix this
 
 float dmr = 0;
 int strn = 0;
@@ -82,16 +82,16 @@ void circlex3right (){
 }
 
 void switchbtn() {
-    if (btn3 && swh==0){    
+    if (swh_btn && swh==0){    
         swh = 1;
     }
-    if (btn3 && swh==1){
+    if (swh_btn && swh==1){
         swh = 0;
     }
 }
 
 void funkyColors (){
-    if (btn2){  
+    if (circle_hue){  
         hue=hue+255;
         // 65535/255=257 different colors!!!!
         //if you want more, do the math (HUE div)
@@ -142,16 +142,16 @@ void setup() {
 
 void loop() {
 
-    btn = digitalRead (START_SPINNING_BTN_PIN);
-    btn2 = digitalRead(CIRCLE_HUE_BTN_PIN);
-    btn3 = digitalRead(SWITCH_SPIN_DIRECTION_SWITCH_PIN);
+    start_spin = digitalRead (START_SPINNING_BTN_PIN);
+    circle_hue = digitalRead(CIRCLE_HUE_BTN_PIN);
+    swh_btn = digitalRead(SWITCH_SPIN_DIRECTION_SWITCH_PIN);
     dmr = analogRead (POTENTIOMETER_PIN);
     strn = dmr / 4.0117647058823529;
     funkyColors();
     switchbtn();
     
     if (swh==0){
-        if (btn) {
+        if (start_spin) {
             brght=48;
             circlex3left();
         }
@@ -163,7 +163,7 @@ void loop() {
         }
     }
     if (swh==1){
-        if (btn){
+        if (start_spin){
             brght=48;
             circlex3right();
         }
