@@ -54,7 +54,8 @@ void circlex3left (){
        HSV_around(nas+1, nas+2);
     }
     nas--;
-    delay (delay_);    
+    delay (delay_);
+    pixels.clear();   
 }
 
 void circlex3right (){
@@ -72,6 +73,7 @@ void circlex3right (){
     }
     nas++;
     delay (delay_);
+    pixels.clear();
 }
 
 void switchbtn() {
