@@ -18,17 +18,10 @@ class spindicator : public Adafruit_NeoPixel{
         Adafruit_NeoPixel pixels;
         uint32_t rgbcolor;
 
-        byte first_pixel = 0;
-        byte max_brght = 42;//initial goes up to 42 (not higher, too bright!!)
+        byte first_pixel = 0;// The starting/first pixel of the tail of the spindicator
 
         int hue = 0;// HUE from 0 to 65535
         const byte frame_delay = 42;
-
-        // bool start_spin = 0;// input to start
-        // bool circle_hue = 0;// input to cycle the HUE
-
-        // int swh = 0 ; // switch for circle left or right 
-        // bool swh_btn = 0 ;// temp value to convert switch 2 button. TODO: fix this
 
         float dmr = 0;
         int strn = 0;
@@ -42,7 +35,6 @@ class spindicator : public Adafruit_NeoPixel{
 
        /**
         * Update the colors of the second and third pixel in the tail
-        * 
         */
        void HSV_around(int second_pixel, int third_pixel){    
             rgbcolor = pixels.ColorHSV(hue, strn, brght);
@@ -55,8 +47,10 @@ class spindicator : public Adafruit_NeoPixel{
         }
 
     public:
-        byte brght = 0;
 
+        byte max_brght = 42;//initial goes up to 42 (not higher, too bright!!)
+        byte brght = 0;// brightness (value of HSV)
+        
         /**
          * The constructor. Initialize the LED strip.
         */
@@ -65,7 +59,7 @@ class spindicator : public Adafruit_NeoPixel{
             pixels.updateLength(NUMPIXELS);
             pixels.setPin(PIXELS_PIN);
 
-            uint32_t rgbcolor = pixels.ColorHSV(0, 0, 0);
+            rgbcolor = pixels.ColorHSV(hue, strn, brght);
 
             pixels.clear();
             pixels.show();
@@ -112,6 +106,7 @@ class spindicator : public Adafruit_NeoPixel{
             delay (frame_delay);
             pixels.clear();
         }
+
         /**
          * TODO: make funkyColors() work
          * 

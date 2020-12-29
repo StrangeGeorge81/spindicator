@@ -11,16 +11,11 @@
 #define SWITCH_SPIN_DIRECTION_SWITCH_PIN 11
 #define POTENTIOMETER_PIN A5
 
-
-
-// uint32_t rgbcolor = pixels.ColorHSV(hue, strn, brght);
 btn spinBtn(START_SPINNING_BTN_PIN);
 btn cyrcleHue(CIRCLE_HUE_BTN_PIN);
 Switch switchDir(SWITCH_SPIN_DIRECTION_SWITCH_PIN);
 pot hue_pot(POTENTIOMETER_PIN);
 spindicator spinD(NUMPIXELS, PIXELS_PIN);
-
-
 
 void setup() {
     
