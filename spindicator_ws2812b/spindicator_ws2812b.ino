@@ -1,4 +1,3 @@
-#include <Adafruit_NeoPixel.h>
 #include "btn.cpp"
 #include "Switch.cpp"
 #include "pot.cpp"
@@ -12,7 +11,6 @@
 #define SWITCH_SPIN_DIRECTION_SWITCH_PIN 11
 #define POTENTIOMETER_PIN A5
 
-Adafruit_NeoPixel pixels(NUMPIXELS, PIXELS_PIN, NEO_GRB + NEO_KHZ800);
 
 int first_pixel = 0;
 int brght = 0;
@@ -37,21 +35,22 @@ int strn = 0;
  * with dmr/255 <=> strn = dmr/4.0117647058823529 (fuck me, right?)
 */
 
-uint32_t rgbcolor = pixels.ColorHSV(hue, strn, brght);
+// uint32_t rgbcolor = pixels.ColorHSV(hue, strn, brght);
 btn spinBtn(START_SPINNING_BTN_PIN);
 btn cyrcleHue(CIRCLE_HUE_BTN_PIN);
 Switch switchDir(SWITCH_SPIN_DIRECTION_SWITCH_PIN);
 pot hue_pot(POTENTIOMETER_PIN);
-
+spindicator spinD(NUMPIXELS, PIXELS_PIN);
+uint32_t rgbcolor = spinD.ColorHSV(hue, strn, brght);
 
 void HSV_around(int second_pixel, int third_pixel){    
-    rgbcolor = pixels.ColorHSV(hue, strn, brght);
-    pixels.setPixelColor (first_pixel, rgbcolor);
-    rgbcolor = pixels.ColorHSV(hue, strn, brght/2);
-    pixels.setPixelColor (second_pixel, rgbcolor);
-    rgbcolor = pixels.ColorHSV(hue, strn, brght/16);
-    pixels.setPixelColor (third_pixel, rgbcolor);
-    pixels.show();
+    rgbcolor = spinD.ColorHSV(hue, strn, brght);
+    spinD.setPixelColor (first_pixel, rgbcolor);
+    rgbcolor = spinD.ColorHSV(hue, strn, brght/2);
+    spinD.setPixelColor (second_pixel, rgbcolor);
+    rgbcolor = spinD.ColorHSV(hue, strn, brght/16);
+    spinD.setPixelColor (third_pixel, rgbcolor);
+    spinD.show();
 }
 
 void circlex3left (){
@@ -69,7 +68,7 @@ void circlex3left (){
     }
     first_pixel--;
     delay (frame_delay);
-    pixels.clear();    
+    spinD.clear();    
 }
 
 void circlex3right (){
@@ -87,7 +86,7 @@ void circlex3right (){
     }
     first_pixel++;
     delay (frame_delay);
-    pixels.clear();
+    spinD.clear();
 }
 
 void funkyColors (){
@@ -104,9 +103,9 @@ void funkyColors (){
 
 void setup() {
     
-    pixels.begin();
-    pixels.clear();
-    pixels.show();
+    spinD.begin();
+    spinD.clear();
+    spinD.show();
 
     // BOOT Secuence!!!
 /*
