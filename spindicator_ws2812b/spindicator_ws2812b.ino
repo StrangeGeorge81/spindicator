@@ -1,4 +1,8 @@
 #include <Adafruit_NeoPixel.h>
+#include "btn.cpp"
+#include "Switch.cpp"
+#include "pot.cpp"
+#include "spindicator.cpp"
 
 #define NUMPIXELS 12//NUMPIXELS 12 <=> 0 to 11
 #define PIXELS_PIN 8
@@ -15,13 +19,13 @@ int brght = 0;
 byte max_brght = 42;//initial goes up to 42 (not higher, too bright!!)
 
 int hue = 0;// HUE from 0 to 65535
-const byte move_delay = 42;
+const byte frame_delay = 42;
 
-bool start_spin = 0;// input to start
-bool circle_hue = 0;// input to cycle the HUE
+// bool start_spin = 0;// input to start
+// bool circle_hue = 0;// input to cycle the HUE
 
-int swh = 0 ; // switch for circle left or right 
-bool swh_btn = 0 ;// temp value to convert switch 2 button. TODO: fix this
+// int swh = 0 ; // switch for circle left or right 
+// bool swh_btn = 0 ;// temp value to convert switch 2 button. TODO: fix this
 
 float dmr = 0;
 int strn = 0;
@@ -34,6 +38,11 @@ int strn = 0;
 */
 
 uint32_t rgbcolor = pixels.ColorHSV(hue, strn, brght);
+btn spinBtn(START_SPINNING_BTN_PIN);
+btn cyrcleHue(CIRCLE_HUE_BTN_PIN);
+Switch switchDir(SWITCH_SPIN_DIRECTION_SWITCH_PIN);
+pot hue_pot(POTENTIOMETER_PIN);
+
 
 void HSV_around(int second_pixel, int third_pixel){    
     rgbcolor = pixels.ColorHSV(hue, strn, brght);
@@ -46,7 +55,7 @@ void HSV_around(int second_pixel, int third_pixel){
 }
 
 void circlex3left (){
-    if (first_pixel == -1 or first_pixel==12){                
+    if (first_pixel == -1 || first_pixel==12){                
         first_pixel = 11;
     }
     if (first_pixel==11){
@@ -59,12 +68,12 @@ void circlex3left (){
        HSV_around(first_pixel+1, first_pixel+2);
     }
     first_pixel--;
-    delay (move_delay);
+    delay (frame_delay);
     pixels.clear();    
 }
 
 void circlex3right (){
-    if (first_pixel==12 or first_pixel== -1){                
+    if (first_pixel==12 || first_pixel== -1){                
         first_pixel = 0;
     }
     if (first_pixel==0){
@@ -77,21 +86,12 @@ void circlex3right (){
        HSV_around(first_pixel-1, first_pixel-2);
     }
     first_pixel++;
-    delay (move_delay);
+    delay (frame_delay);
     pixels.clear();
 }
 
-void switchbtn() {
-    if (swh_btn && swh==0){    
-        swh = 1;
-    }
-    if (swh_btn && swh==1){
-        swh = 0;
-    }
-}
-
 void funkyColors (){
-    if (circle_hue){  
+    if (cyrcleHue.status()){  
         hue=hue+255;
         // 65535/255=257 different colors!!!!
         //if you want more, do the math (HUE div)
@@ -105,10 +105,8 @@ void funkyColors (){
 void setup() {
     
     pixels.begin();
-    pinMode (START_SPINNING_BTN_PIN, INPUT);
-    pinMode (CIRCLE_HUE_BTN_PIN, INPUT);
-    pinMode (POTENTIOMETER_PIN, INPUT);
-    pinMode (SWITCH_SPIN_DIRECTION_SWITCH_PIN, INPUT);
+    pixels.clear();
+    pixels.show();
 
     // BOOT Secuence!!!
 /*
@@ -141,17 +139,14 @@ void setup() {
 }
 
 void loop() {
-
-    start_spin = digitalRead (START_SPINNING_BTN_PIN);
-    circle_hue = digitalRead(CIRCLE_HUE_BTN_PIN);
-    swh_btn = digitalRead(SWITCH_SPIN_DIRECTION_SWITCH_PIN);
-    dmr = analogRead (POTENTIOMETER_PIN);
-    strn = dmr / 4.0117647058823529;
-    funkyColors();
-    switchbtn();
     
-    if (swh==0){
-        if (start_spin) {
+    strn = hue_pot.value() / 4.0117647058823529;
+
+    funkyColors();
+    switchDir.update();
+    
+    if (switchDir.status()){
+        if (spinBtn.status()) {
             brght=48;
             circlex3left();
         }
@@ -162,8 +157,8 @@ void loop() {
             }
         }
     }
-    if (swh==1){
-        if (start_spin){
+    if (switchDir.status()){
+        if (spinBtn.status()){
             brght=48;
             circlex3right();
         }
