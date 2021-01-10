@@ -5,7 +5,7 @@
 
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-int nas = 0;
+int nas = -1;
 //NUMPIXELS 12 <=> 0 to 11
 int brght = 0;
 //initial goes up to 42 (not higher, too bright!!)
@@ -55,7 +55,9 @@ void circlex3left (){
     }
     nas--;
     delay (delay_);
-    pixels.clear();    
+    pixels.clear();
+    pixels.show();
+
 }
 
 void circlex3right (){
@@ -74,6 +76,7 @@ void circlex3right (){
     nas++;
     delay (delay_);
     pixels.clear();
+    pixels.show();
 }
 
 void switchbtn() {
@@ -107,7 +110,7 @@ void setup() {
 
     // BOOT Secuence!!!
 
-    for (int i=0; i<=11; i++){            
+    /*for (int i=0; i<=11; i++){            
         uint32_t colour = pixels.Color((i+1)*20, (i+1)*20, (i+1)*20);
 
         pixels.setPixelColor (i, colour);
@@ -129,7 +132,7 @@ void setup() {
         delay(10);
 
     }
-    pixels.clear();
+    pixels.clear();     */
     
     // Might work,might not....
     
